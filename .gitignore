@@ -151,6 +151,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-OrigFrames/
-Original.mp4
 .vscode/
+Original.mp4
+OrigFrames*/
+video*.hex
+!video-13926p-60fps-4a26a634.hex

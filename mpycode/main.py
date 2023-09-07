@@ -86,11 +86,18 @@ def i2s_callback(arg):  # I2S缓存清空时的回调函数
 if __name__ == "__main__":
     Flag = CONJ - 1  # 标记
 
-    # 匹配视频文件名
+    # 寻找视频文件
+    VideoFind = False
     files = os.listdir("/sd")
     for file in files:
-        if (file.startswith('video')):  # 匹配文件名
+        if (file.startswith("video-")):
             VideoFileName = file
+            print(f"Using video hexfile {VideoFileName} to play")
+            VideoFind = True
+            break
+    if not VideoFind:
+        raise Exception(
+            "Video hexfile video-xxxxxp-xxfps-xxxxxxxx.hex not found")
 
     # 打开视频文件
     VideoFile = open(f'/sd/{VideoFileName}', 'rb')  # 打开文件
@@ -98,17 +105,13 @@ if __name__ == "__main__":
     # 从视频文件名中获取视频信息
     VideoFileName = VideoFileName.split('-')
     try:
-        FrameNum = int(VideoFileName[1][:5])  # 读取文件名中帧总数
-    except:
-        FrameNum = 1  # 未定义帧总数或获取失败则仅播放一帧
-    try:
         Fps = int(VideoFileName[2][:2])  # 读取文件名中fps
     except:
         Fps = 30  # 未定义fps或获取失败则默认为30
 
     # 打开音频文件
     try:
-        AudioFile = open(f"/sd/{WAV_FILE}", "rb")
+        AudioFile = open(f"/sd/{WAV_FILE}", 'rb')
         MusicType = 2
     except OSError:
         try:
@@ -152,7 +155,8 @@ if __name__ == "__main__":
         time0.init(period=100, mode=Timer.ONE_SHOT, callback=time0_irq)
     # 音乐和乐谱都不存在
     else:
-        print(f"Neither {WAV_FILE} nor musicscore.py exists, no music will be played")
+        print(
+            f"Neither {WAV_FILE} nor musicscore.py exists, no music will be played")
 
     # 主定时器初始化
     tim1 = Timer(1)  # 创建tim1定时器对象，播放视频
