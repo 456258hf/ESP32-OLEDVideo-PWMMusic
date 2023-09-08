@@ -1,4 +1,4 @@
-ORIGINAL_VIDEO = "original1.mp4"  # 视频源文件名
+ORIGINAL_VIDEO = "original.mp4"  # 视频源文件名
 
 REVERSED_COLOR = False  # 是否反色
 SCREEN_WIDTH = 128  # 屏幕宽度

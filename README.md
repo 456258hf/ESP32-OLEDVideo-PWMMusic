@@ -4,7 +4,7 @@
 
 ---
 
-本项目以 [Bad Apple!! 影绘 PV](https://www.bilibili.com/video/BV1x5411o7Kn) 为例，在电脑端预先处理好视频和乐谱，然后在 esp32 上使用单色 OLED12864 以 128\*64@60fps 或其他大小和分辨率播放给定的视频，使用 PWM 驱动蜂鸣器 / 使用 I2S 驱动 DAC 播放给定的音频。
+本项目以 [Bad Apple!! 影绘 PV](https://www.bilibili.com/video/BV1x5411o7Kn) 为例，在电脑端预先处理好视频和乐谱，然后在 esp32 上使用单色 OLED12864 以 128\*64@60fps 或其他大小和分辨率播放给定的视频，使用 PWM 驱动蜂鸣器 或 使用 I2S 驱动 DAC 播放给定的音频。
 
 ## 效果演示
 
@@ -18,7 +18,7 @@
 
 - 任意 esp32 开发板
 - ssd1306 驱动芯片的单色 OLED，分辨率 128\*64，I2C 接口
-- 无源蜂鸣器（需要驱动） / 支持 I2S 协议的 DAC 模块
+- 无源蜂鸣器（需要驱动） 或 支持 I2S 协议的 DAC 模块
 
 ### 测试环境
 
@@ -31,29 +31,29 @@
 
 为了在电脑上进行视频处理，需要额外安装的 Python 库
 
-| 工具                 | 库       |
-| -------------------- | -------- |
-| `video2frames.py`    | `OpenCV` |
-| `frames2videohex.py` | `Pillow` |
+| 工具                 | pip 库名        |
+| -------------------- | --------------- |
+| `video2frames.py`    | `opencv-python` |
+| `frames2videohex.py` | `Pillow`        |
 
-为了将视频处理为音频，需要额外安装 `ffmpeg`
+为了将进行视频的预处理，以及将视频处理为音频，需要额外安装 [`ffmpeg`](https://ffmpeg.org/download.html)
 
 ## 用法
 
 ### 1. 视频处理
 
-0. 对源视频按照需求先进行一些预处理，比如调整 fps、删除黑边，让 ffmpeg 来干吧
+0. 对源视频按照需求先进行一些预处理，比如旋转视频、调整 fps、删除黑边，让 ffmpeg 来干吧
 1. 将源视频放到项目文件夹里，默认名称为 `original.mp4`
 2. 修改 `config.py` 头部的参数，以符合需求（参考文件内配置说明）
-3. 运行 `video2frames.py` ，将视频拆分为每一帧的图
-4. 运行 `frames2videohex.py` ，将每一帧的图像处理并合并为用于 esp32 上显示的格式
-5. 将生成的 hex 文件，例如 `video-13926p-60fps-4a26a634.hex` ，放进已格式化为 FAT32 文件系统的 sd 卡根目录中
+3. 运行 `video2frames.py` ，将视频拆分为每一帧的图像，其存储在 `\OrigFrames-xxxxxp-xxfps\` 中
+4. 运行 `frames2videohex.py` ，将每一帧的图像处理并合并为用于 esp32 上显示的 hex 文件
+5. 将当前目录中生成的 hex 文件，例如 `video-13926p-60fps-4a26a634.hex` ，放进已格式化为 FAT32 文件系统的 SD 卡根目录中
 
 ### 2. 音频处理
 
 1. 使用 i2s 播放音乐：
    1. `ffmpeg -i original.mp4 audio.wav`
-   2. 将 `audio.wav` 放置到上述 sd 卡根目录中
+   2. 将当前目录中生成的 `audio.wav` 放置到上述 SD 卡根目录中
 2. 使用蜂鸣器播放乐谱：
    1. 待补充
    2. 见后文硬件配置第二步
@@ -115,8 +115,18 @@
 
 - 录制视频
 
-- ~~测试并添加适用于 SPI 接口 OLED 的代码~~ 由于 esp32 仅有两个 SPI 接口，分别用于连接模块内部 SPI Flash 与 SD 卡，而使用软件 SPI 对性能有较大影响，故作废；未来可能在 esp32-s3 上进行测试
+- ☑️ 使用 esp32 的 I2S 播放更清晰的音频
 
-- ☑️ 使用 esp32 的 I2S 或模拟 DAC 直接播放更清晰的音频
+- 使用 DAC 直接播放音频
 
 - 提供自动由 .midi 或 .ust 转为乐谱文件的方法
+
+- 添加适用于 SPI 接口 OLED 的代码
+
+- 添加将 hexfile 与 wav 上传于 flash 内的无 SD 卡的测试选项
+
+- 编写可以预览 hexfile 中视频的桌面程序
+
+- 添加用于 esp32-s3、esp32-c3 单片机上的 micropython 代码
+
+- （远期）添加用于 STM32F412RET6（类 pyboard）、rp2040 单片机上的 micropython 代码
