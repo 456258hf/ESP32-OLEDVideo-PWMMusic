@@ -152,7 +152,7 @@ cython_debug/
 #.idea/
 
 .vscode/
-Original.mp4
-OrigFrames*/
-video*.hex
-!video-13926p-60fps-4a26a634.hex
+./OrigFrames-*/
+original*.mp4
+./audio.wav
+./video-*.hex

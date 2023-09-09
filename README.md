@@ -47,13 +47,13 @@
 2. 修改 `config.py` 头部的参数，以符合需求（参考文件内配置说明）
 3. 运行 `video2frames.py` ，将视频拆分为每一帧的图像，其存储在 `\OrigFrames-xxxxxp-xxfps\` 中
 4. 运行 `frames2videohex.py` ，将每一帧的图像处理并合并为用于 esp32 上显示的 hex 文件
-5. 将当前目录中生成的 hex 文件，例如 `video-13926p-60fps-4a26a634.hex` ，放进已格式化为 FAT32 文件系统的 SD 卡根目录中
+5. 将当前目录中生成的 hex 文件，例如 `video-13926p-60fps-4a26a634.hex` ，放进已格式化为 FAT32 文件系统的 SD 卡根目录中， `\sd-files-for-test\` 中有测试用文件，内容为 Bad Apple!! 影绘 PV。
 
 ### 2. 音频处理
 
 1. 使用 i2s 播放音乐：
    1. `ffmpeg -i original.mp4 audio.wav`
-   2. 将当前目录中生成的 `audio.wav` 放置到上述 SD 卡根目录中
+   2. 将当前目录中生成的 `audio.wav` 放置到上述 SD 卡根目录中， `\sd-files-for-test\` 中有测试用文件，内容为 Bad Apple!! 影绘 PV。
 2. 使用蜂鸣器播放乐谱：
    1. 待补充
    2. 见后文硬件配置第二步
