@@ -153,6 +153,7 @@ cython_debug/
 
 .vscode/
 ./OrigFrames-*/
-original*.mp4
 ./audio.wav
 ./video-*.hex
+original*.mp4
+test*.py

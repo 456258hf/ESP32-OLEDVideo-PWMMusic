@@ -1,4 +1,4 @@
-from ssd1306 import SSD1306_I2C
+from ssd1306 import SSD1306_I2C, SSD1306_SPI
 from machine import Pin, Timer, I2S
 import machine
 import os
@@ -8,6 +8,10 @@ machine.freq(240000000)
 # 使用硬件I2C(1)，scl=25，sda=26
 i2c = machine.I2C(1, freq=1200000)
 oled = SSD1306_I2C(128, 64, i2c)
+
+# 使用硬件SPI(1)，sck=16，mosi=17，dc=22，res=5，cs=21
+# spi = machine.SPI(1, baudrate=40000000,  sck=Pin(16), mosi=Pin(17), miso=None)
+# oled = SSD1306_SPI(128, 64, spi, dc=Pin(22), res=Pin(5), cs=Pin(21))
 
 # 使用默认SD卡槽2，sck=18，miso=19，mosi=23，指定cs=4
 sd = machine.SDCard(slot=2, cs=Pin(4))
