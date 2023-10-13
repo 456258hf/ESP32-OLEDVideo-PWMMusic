@@ -44,14 +44,15 @@ def Binarization2String(image: Image) -> str:  # 将图像二值化为字符串
     return image_str
 
 
-def Transform(input_str: str) -> str:  # 对图像进行处理，使得可以直接写进ssd1306显存
-    output_list = [None] * 8192
-    for o in range(8):
-        for m in range(128):
-            for n in range(8):
-                j = 1024*o + 8*m + n
-                i = 1024*(o+1) - 128*(n+1) + m
-                output_list[j] = input_str[i]
+def Transform(input_str: str) -> str:  # 对图像进行处理，使得可以直接写进 oled 显存
+    output_list = [None] * SCREEN_WIDTH * SCREEN_HEIGHT
+    for page in range(SCREEN_HEIGHT // 8):
+        for column in range(SCREEN_WIDTH):
+            for row in range(8):
+                oldpos = 8*SCREEN_WIDTH*page + 8*column + row
+                newpos = 8*SCREEN_WIDTH * \
+                    (page+1) - SCREEN_WIDTH*(row+1) + column
+                output_list[oldpos] = input_str[newpos]
     output_str = "".join(output_list)
     return output_str
 
@@ -101,7 +102,8 @@ if __name__ == '__main__':
         # 对图像进行处理，使得可以直接写进ssd1306缓存：
         frame_strt = Transform(frame_str)
         # 将字符串转换为bytes类型的对象：
-        frame_bytes = int(frame_strt, 2).to_bytes(1024, byteorder='big')
+        frame_bytes = int(frame_strt, 2).to_bytes(
+            SCREEN_WIDTH * SCREEN_HEIGHT//8, byteorder='big')
         # 在文件最后写入当前帧数据：
         with open(hexname, 'ab') as f:
             f.write(frame_bytes)

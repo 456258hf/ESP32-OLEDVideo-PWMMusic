@@ -102,17 +102,17 @@
 
 - 乐谱由 UTAU 歌曲文件(.ust)手动转换+补全而来：[Youtube](https://www.youtube.com/watch?v=GPnS1vDhqPc) [ust 配布地址](http://www.mediafire.com/?83drvmwkvifdja1)
 
-- 本项目的音频部分由自己在 51 单片机上的项目移植、修改而来，该 C51 项目一开始参考了此视频的思路，并进行了优化：[Bilibili](https://www.bilibili.com/video/BV1sa411b7U3/) [代码配布地址](https://pan.baidu.com/s/18flDyiLVOPmjuAXGkhvKNQ?pwd=imkn)
+- 本项目的音频部分由自己在 51 单片机上的项目移植、修改而来，该 C51 项目一开始参考了此视频的思路，并进行了优化：[Bilibili](https://www.bilibili.com/video/BV1sa411b7U3) [代码配布地址](https://pan.baidu.com/s/18flDyiLVOPmjuAXGkhvKNQ?pwd=imkn)
 
 - 初期参考了 [maysrp/badapple](https://github.com/maysrp/badapple) 仓库的绘制方式，但是逐行划线对性能有较大影响，且每帧所耗时间不同，导致部分帧卡顿，故未采用
 
 - 将视频的每一帧进行处理的代码参考了 [Lei-Tin/BinaryBadApple](https://github.com/Lei-Tin/BinaryBadApple)
 
-- 视频抽帧代码参考了 [ChatGPT](https://chat.openai.com/) 的回答
+- 视频抽帧代码参考了 [ChatGPT](https://chat.openai.com) 的回答
 
 - I2S 部分代码参考了 [miketeachman/micropython-i2s-examples](https://github.com/miketeachman/micropython-i2s-examples)
 
-- MicroPython 官方 [英文文档](https://docs.micropython.org/en/latest/) [中文文档](http://micropython.com.cn/en/latet/index.html)
+- MicroPython 官方 [英文文档](https://docs.micropython.org/en/latest/) [中文文档](http://micropython.com.cn/en/latet/)
 
 ## 后续计划
 
@@ -122,7 +122,7 @@
 
 - ⏩ 添加适用于 SH1106 驱动的 1.3" OLED 的代码
 
-- 添加适用于其他分辨率的 OLED 的代码
+- ⏩ 添加适用于其他分辨率的 OLED 的代码
 
 ### 2.音频部分
 
