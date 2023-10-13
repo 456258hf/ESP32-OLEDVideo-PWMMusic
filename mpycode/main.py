@@ -1,17 +1,26 @@
 from ssd1306 import SSD1306_I2C, SSD1306_SPI
+from sh1106 import SH1106_I2C, SH1106_SPI
 from machine import Pin, Timer, I2S
 import machine
 import os
 
 machine.freq(240000000)
 
-# 使用硬件I2C(1)，scl=25，sda=26
+# SSD1306_I2C 使用硬件I2C(1)，scl=25，sda=26
 i2c = machine.I2C(1, freq=1200000)
 oled = SSD1306_I2C(128, 64, i2c)
 
-# 使用硬件SPI(1)，sck=16，mosi=17，dc=22，res=5，cs=21
+# SSD1306_SPI 使用硬件SPI(1)，sck=16，mosi=17，dc=22，res=5，cs=21
 # spi = machine.SPI(1, baudrate=40000000,  sck=Pin(16), mosi=Pin(17), miso=None)
 # oled = SSD1306_SPI(128, 64, spi, dc=Pin(22), res=Pin(5), cs=Pin(21))
+
+# SH1106_I2C 使用硬件I2C(1)，scl=25，sda=26
+# i2c = machine.I2C(1, freq=1200000)
+# oled = SH1106_I2C(128, 64, i2c)
+
+# SH1106_SPI 使用硬件SPI(1)，sck=16，mosi=17，dc=22，res=5，cs=21
+# spi = machine.SPI(1, baudrate=40000000,  sck=Pin(16), mosi=Pin(17), miso=None)
+# oled = SH1106_SPI(128, 64, spi, dc=Pin(22), res=Pin(5), cs=Pin(21))
 
 # 使用默认SD卡槽2，sck=18，miso=19，mosi=23，指定cs=4
 sd = machine.SDCard(slot=2, cs=Pin(4))
@@ -59,7 +68,10 @@ def tim1_irq(timer1):
             Flag = 0
 
     try:
-        VideoRead = VideoFile.readinto(oled.buffer)  # 读取一帧数据到显存
+        if type(oled) == SSD1306_I2C or type(oled) == SSD1306_SPI:
+            VideoRead = VideoFile.readinto(oled.buffer)  # 读取一帧数据到显存
+        elif type(oled) == SH1106_I2C or type(oled) == SH1106_SPI:
+            VideoRead = VideoFile.readinto(oled.renderbuf)  # 读取一帧数据到显存
     except OSError:  # VideoRead == 0 后，关闭定时器所需时间较长，可能导致此错误
         print("maybe end of video file")
         VideoFile.close()
@@ -70,7 +82,10 @@ def tim1_irq(timer1):
         VideoFile.close()
         tim1.deinit()
     else:
-        oled.show()  # 显示图像
+        if type(oled) == SSD1306_I2C or type(oled) == SSD1306_SPI:
+            oled.show()  # 显示图像
+        elif type(oled) == SH1106_I2C or type(oled) == SH1106_SPI:
+            oled.show(full_update=True)  # 显示图像
 
 
 def i2s_play():  # 进行I2S传输
