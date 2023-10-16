@@ -24,7 +24,6 @@ oled = SSD1306_I2C(128, 64, i2c)
 
 # 使用默认SD卡槽2，sck=18，miso=19，mosi=23，指定cs=4
 sd = machine.SDCard(slot=2, cs=Pin(4))
-os.mount(sd, "/sd")
 
 # 定义I2S模块连接引脚，使用I2S(1), sck=32, sd=33, 指定ws=27
 SCK_PIN = 32
@@ -105,9 +104,16 @@ def i2s_callback(arg):  # I2S缓存清空时的回调函数
 if __name__ == "__main__":
     Flag = CONJ - 1  # 标记
 
+    try:
+        os.mount(sd, "/sd")
+        path = "/sd"
+    except OSError:
+        print("SD card is not inserted or is damaged, trying to find files from the internal file system")
+        path = ""
+
     # 寻找视频文件
     VideoFind = False
-    files = os.listdir("/sd")
+    files = os.listdir(path)
     for file in files:
         if (file.startswith("video-")):
             VideoFileName = file
@@ -119,7 +125,7 @@ if __name__ == "__main__":
             "Video hexfile video-xxxxxp-xxfps-xxxxxxxx.hex not found")
 
     # 打开视频文件
-    VideoFile = open(f'/sd/{VideoFileName}', 'rb')  # 打开文件
+    VideoFile = open(f"{path}/{VideoFileName}", 'rb')  # 打开文件
 
     # 从视频文件名中获取视频信息
     VideoFileName = VideoFileName.split('-')
@@ -130,7 +136,7 @@ if __name__ == "__main__":
 
     # 打开音频文件
     try:
-        AudioFile = open(f"/sd/{WAV_FILE}", 'rb')
+        AudioFile = open(f"{path}/{WAV_FILE}", 'rb')
         MusicType = 2
     except OSError:
         try:
