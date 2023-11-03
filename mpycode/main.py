@@ -112,15 +112,13 @@ if __name__ == "__main__":
         path = ""
 
     # 寻找视频文件
-    VideoFind = False
     files = os.listdir(path)
     for file in files:
-        if (file.startswith("video-")):
+        if file.startswith("video-"):
             VideoFileName = file
             print(f"Using video hexfile {VideoFileName} to play")
-            VideoFind = True
             break
-    if not VideoFind:
+    else:
         raise Exception(
             "Video hexfile video-xxxxxp-xxfps-xxxxxxxx.hex not found")
 

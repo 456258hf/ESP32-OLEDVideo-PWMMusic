@@ -1,6 +1,7 @@
-import cv2
+"""将视频拆分为每一帧的图像"""
 import os
-from config import *
+import cv2
+from config import ORIGINAL_VIDEO
 
 if __name__ == '__main__':
     # 寻找视频文件
@@ -32,6 +33,6 @@ if __name__ == '__main__':
             else:
                 break
         print(
-            f"\nGenerated! Check the frames in folder \{original_frame_folder}\ ")
+            f"\nGenerated! Check the frames in folder \\{original_frame_folder}\\ ")
     # 释放VideoCapture对象
     cap.release()

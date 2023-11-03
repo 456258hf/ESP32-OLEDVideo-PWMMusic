@@ -1,3 +1,4 @@
+"""config"""
 ORIGINAL_VIDEO = "original.mp4"  # 视频源文件名
 
 REVERSED_COLOR = False  # 是否反色
